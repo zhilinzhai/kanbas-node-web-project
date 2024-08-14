@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import assignmentsData from "../../Database/assignments.json";
 import { Assignment } from "./AssignmentType";
+import { useSelector } from "react-redux";
 
 const submissionTypes = [
   "Website URL",
@@ -20,6 +21,8 @@ const Editor = ({
   updateAssignment: Function;
   assignments: Assignment[];
 }) => {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
   const { id, cid } = useParams<{ id: string; cid: string }>();
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
     id === "new"
@@ -56,7 +59,7 @@ const Editor = ({
     } else {
       updateAssignment(currentAssignment);
     }
-    window.location.href = `/#/Kanbas/Courses/${cid}/Assignments`;
+    window.location.href = `/Kanbas/Courses/${cid}/Assignments`;
   };
 
   if (!currentAssignment) {
@@ -71,7 +74,7 @@ const Editor = ({
             <label htmlFor="wd-name" className="form-label">
               Assigment Name
             </label>
-            <input
+            <input disabled={currentUser.role !== "FACULTY"}
               id="wd-name"
               name="title"
               value={currentAssignment.title}
@@ -87,6 +90,7 @@ const Editor = ({
               Assignment Description
             </label>
             <textarea
+              disabled={currentUser.role !== "FACULTY"}
               id="wd-description"
               name="description"
               cols={30}
@@ -105,7 +109,7 @@ const Editor = ({
             <label htmlFor="wd-points" className="form-label">
               Points
             </label>
-            <input
+            <input disabled={currentUser.role !== "FACULTY"}
               id="wd-points"
               name="points"
               type="number"
@@ -119,6 +123,7 @@ const Editor = ({
               Assignment Group
             </label>
             <select
+              disabled={currentUser.role !== "FACULTY"}
               id="wd-group"
               name="assignmentGroup"
               className="form-control"
@@ -154,6 +159,7 @@ const Editor = ({
               Submission Type
             </label>
             <select
+              disabled={currentUser.role !== "FACULTY"}
               id="wd-submission-type"
               name="submissionType"
               className="form-control"
@@ -198,7 +204,7 @@ const Editor = ({
             <label htmlFor="wd-due-date" className="form-label">
               Due
             </label>
-            <input
+            <input disabled={currentUser.role !== "FACULTY"}
               type="date"
               id="wd-due-date"
               name="dueDate"
@@ -209,7 +215,7 @@ const Editor = ({
             <label htmlFor="wd-available-from" className="form-label">
               Available from
             </label>
-            <input
+            <input disabled={currentUser.role !== "FACULTY"}
               type="date"
               id="wd-available-from"
               name="availableDate"
@@ -220,7 +226,7 @@ const Editor = ({
             <label htmlFor="wd-available-until" className="form-label">
               Until
             </label>
-            <input
+            <input disabled={currentUser.role !== "FACULTY"}
               type="date"
               id="wd-available-until"
               className="form-control mb-2"
@@ -238,9 +244,11 @@ const Editor = ({
             >
               Cancel
             </Link>
-            <button type="submit" className="btn btn-success float-end">
+           {
+           currentUser.role === "FACULTY" &&
+           <button type="submit" className="btn btn-success float-end">
               Save
-            </button>
+            </button>}
           </div>
         </div>
       </form>

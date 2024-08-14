@@ -6,6 +6,7 @@ import AssignmentSearch from "./AssignmentSearch";
 import AssignmentView from "./AssignmentView";
 import "../../styles.css";
 import { Assignment } from "./AssignmentType";
+import { useSelector } from "react-redux";
 
 export default function Assignments({
   assignments,
@@ -14,11 +15,13 @@ export default function Assignments({
   assignments: Assignment[];
   deleteAssignment: Function;
 }) {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
   return (
     <div id="wd-assignments" className="container">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <AssignmentSearch />
-        <div>
+        {currentUser.role === "FACULTY" && <div>
           <button
             id="wd-add-assignment-group"
             className="btn me-2 btn-secondary"
@@ -32,7 +35,7 @@ export default function Assignments({
           }>
             <FaPlus /> Assignment
           </button>
-        </div>
+        </div>}
       </div>
       <div className="wd-assignments-header d-flex justify-content-between align-items-center mb-4">
         <h3 id="wd-assignments-title">ASSIGNMENTS</h3>

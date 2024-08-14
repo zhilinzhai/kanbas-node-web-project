@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 export default function ProtectedRoute({ children }: { children: any }) {

@@ -5,6 +5,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import assignmentsData from "../../Database/assignments.json";
 import { Assignment } from "./AssignmentType";
+import { useSelector } from "react-redux";
 
 export default function AssignmentView({
   assignments,
@@ -13,6 +14,8 @@ export default function AssignmentView({
   assignments: Assignment[];
   deleteAssignment: Function;
 }) {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
   const { cid } = useParams<{ cid: string }>();
 
   const filteredAssignments = assignments.filter(
@@ -63,7 +66,7 @@ export default function AssignmentView({
               </span>
             </div>
           </div>
-          <div className="wd-assignment-actions ms-auto d-flex align-items-center">
+         {currentUser.role==="FACULTY" && <div className="wd-assignment-actions ms-auto d-flex align-items-center">
             <FaPen
               className="text-primary me-4"
               style={{ cursor: "pointer" }}
@@ -78,7 +81,7 @@ export default function AssignmentView({
               onClick={() => handleDelete(assignment._id)}
             />
             <FaCheckCircle className="text-success me-2" />
-          </div>
+          </div>}
         </li>
       ))}
     </ul>

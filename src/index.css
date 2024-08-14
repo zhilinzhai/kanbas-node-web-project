@@ -21,4 +21,19 @@ body {
 #root {
   height: 100%; }
 
+.custom-dropdown-toggle::after {
+    display: none !important;
+}
+
+.custom-tabs .nav-link {
+  color: #DC3545;
+}
+
+.custom-tabs .nav-link:hover {
+  color: #DC3545;
+}
+
+
+
+
 
