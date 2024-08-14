@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import * as client from "./client";
 import PeopleDetails from "./Details"; 
+import { useSelector } from "react-redux";
 
 export default function PeopleTable() {
   const [users, setUsers] = useState<any[]>([]);
@@ -49,13 +50,17 @@ export default function PeopleTable() {
   useEffect(() => {
     fetchUsers();
   }, []);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
   return (
     <div id="wd-people-table">
+      {
+        currentUser.role === "FACULTY" &&
         <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
-        <FaPlus className="me-2" />
-        People
-      </button>
-        <input onChange={(e) => filterUsersByName(e.target.value)} placeholder="Search people"
+      <FaPlus className="me-2" />
+      People
+    </button>
+      }  <input onChange={(e) => filterUsersByName(e.target.value)} placeholder="Search people"
         className="form-control float-start w-25 me-2 wd-filter-by-name" />
         <select value={role} onChange={(e) =>filterUsersByRole(e.target.value)}
         className="form-select float-start w-25 wd-select-role" >
@@ -75,7 +80,7 @@ export default function PeopleTable() {
                 <span className="wd-first-name">{user.firstName}</span>
                 <span className="wd-last-name">{user.lastName}</span>
               </td>
-              <td className="wd-login-id">{user.loginId}</td>
+              <td className="wd-login-id">{user.username}</td>
               <td className="wd-section">{user.section}</td>
               <td className="wd-role">{user.role}</td>
               <td className="wd-last-activity">{user.lastActivity}</td>
