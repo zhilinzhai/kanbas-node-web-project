@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { addAssignment, deleteAssignment, updateAssignment , setAssignment} from "./Assignments/reducer";
 import CoursesNavigation from "./Navigation";
 import Modules from "./Modules";
@@ -8,16 +9,22 @@ import Grades from "./Grades/Grades";
 import PeopleTable from './People/Table';
 import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { FaAlignJustify } from "react-icons/fa";
-import { courses } from "../Database";
 import { useDispatch, useSelector } from "react-redux";
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import client from "./Assignments/client";
-export default function Courses({ courses }: { courses: any[] }) {
+import * as courseClient from "../Courses/client";
+import QuizList from "./Quizzes";
+import QuizDetails from "./Quizzes/QuizDetails";
+import QuizEditor from "./Quizzes/QuizEditor";
+import QuizPreview from "./Quizzes/QuizPreview";
+
+export default function Courses() {
   const { assignments } = useSelector((state: any) => state.assignmentreducer);
   const dispatch = useDispatch();
   const { cid } = useParams();
   const { pathname } = useLocation();
-  const course = courses.find((course) => course._id === cid);
+  const [courses, setCourses] = useState<any[]>([]);
+  const course = courses.find((course) => course.cid === cid);
 
   async function fetchNewDatas(){
     try {
@@ -28,7 +35,13 @@ export default function Courses({ courses }: { courses: any[] }) {
     }
   }
   
-  useEffect(()=>{
+  const fetchCourses = async () => {
+    const courses = await courseClient.fetchAllCourses();
+    setCourses(courses);
+  };
+
+  useEffect(() => {
+    fetchCourses();
     fetchNewDatas();
   },[]);
 
@@ -94,7 +107,11 @@ export default function Courses({ courses }: { courses: any[] }) {
             <Route path="Grades" element={<Grades />} />
             <Route path="People" element={<PeopleTable />} />
             <Route path="People/:uid" element={<PeopleTable />} />
-
+            <Route path="Quizzes" element={<QuizList/>} />
+            <Route path="Quizzes/Details/:qId" element={<QuizDetails/>} />
+            <Route path="Quizzes/Creator/:qId" element={<QuizEditor create={true} />} />
+            <Route path="Quizzes/Editor/:qId" element={<QuizEditor create={false}/>} />
+            <Route path="Quizzes/Preview/:qId" element={<QuizPreview/>} />
           </Routes>
         </div>
       </div>

@@ -9,7 +9,7 @@ export default function CoursesNavigation({cid}:{cid:string}) {
     <div id="wd-courses-navigation" className="list-group fs-5 rounded-0">
       {
          links.map((item) => (
-            <a id={`wd-courses-${item}-link`} href={`#/Kanbas/Courses/${cid}/${item}`} 
+            <a id={`wd-courses-${item}-link`} href={`/Kanbas/Courses/${cid}/${item}`} 
             className={`list-group-item border border-0 ${currentLocation === item ? "active" : "text-danger"}`}>
                {item}
             </a>

@@ -87,6 +87,7 @@ export default function Modules() {
                   value={module.name}
                   onChange={(e) => handleUpdateModule({ ...module, name: e.target.value })}
                   onKeyDown={(e) => {
+                    console.log(e.key);
                     if (e.key === "Enter") {
                       saveModule({ ...module, editing: false });
                     }
