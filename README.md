@@ -1,1 +1,1 @@
-# kanbas-node-web-project
+# kanbas-web
